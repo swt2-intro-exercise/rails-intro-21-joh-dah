@@ -1,7 +1,7 @@
 module AuthorsHelper
     
-    def concat_strings(first, second)
-        first + ' ' + second
-    end
+    # def concat_strings(first, second)
+    #     first + ' ' + second
+    # end
       
 end
