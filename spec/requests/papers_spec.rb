@@ -58,12 +58,12 @@ RSpec.describe "/papers", type: :request do
     context "with valid parameters" do
       it "creates a new Paper" do
         expect {
-          post papers_url, params: { paper: valid_attributes}
+          post papers_url, params: { paper: {title: 'a', venue:'b', year: 1} }
         }.to change(Paper, :count).by(1)
       end
 
       it "redirects to the created paper" do
-        post papers_url, params: { paper: valid_attributes }
+        post papers_url, params: { paper: {title: 'a', venue:'b', year: 1} }
         expect(response).to redirect_to(paper_url(Paper.last))
       end
     end
@@ -71,12 +71,12 @@ RSpec.describe "/papers", type: :request do
     context "with invalid parameters" do
       it "does not create a new Paper" do
         expect {
-          post papers_url, params: { paper: invalid_attributes }
+          post papers_url, params: {paper: {title: 'Titelo', venue: 'Venu', year: 'Eins'} }
         }.to change(Paper, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
-        post papers_url, params: { paper: invalid_attributes }
+        post papers_url, params: {paper: {title: 'Titelo', venue: 'Venu', year: 'Eins'} }
         expect(response).to be_successful
       end
     end
@@ -90,14 +90,14 @@ RSpec.describe "/papers", type: :request do
 
       it "updates the requested paper" do
         paper = Paper.create!(title: 'Titelo', venue: 'Venu', year:1999)
-        patch paper_url(paper), params: { paper: new_attributes }
+        patch paper_url(paper), params: { paper: {title: 'a', venue:'b', year: 1} }
         paper.reload
-        skip("Add assertions for updated state")
+        expect(paper.title).to eq('a')
       end
 
       it "redirects to the paper" do
         paper = Paper.create!(title: 'Titelo', venue: 'Venu', year:1999)
-        patch paper_url(paper), params: { paper: new_attributes }
+        patch paper_url(paper), params: { paper: {title: 'a', venue:'b', year: 1} }
         paper.reload
         expect(response).to redirect_to(paper_url(paper))
       end
@@ -106,7 +106,7 @@ RSpec.describe "/papers", type: :request do
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
         paper = Paper.create!(title: 'Titelo', venue: 'Venu', year:1999)
-        patch paper_url(paper), params: { paper: invalid_attributes }
+        patch paper_url(paper), params: { paper: {title: 'Titelo', venue: 'Venu', year: 'Eins'} }
         expect(response).to be_successful
       end
     end
